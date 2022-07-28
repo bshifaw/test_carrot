@@ -34,9 +34,9 @@ task compare {
         echo "false"
         fi
     >>>
-    runtime {
-        docker: image_to_use
-    }
+    #runtime {
+    #    docker: image_to_use
+    #}
     output {
         File comparison_result = stdout()
     }

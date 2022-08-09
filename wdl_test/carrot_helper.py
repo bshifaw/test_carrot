@@ -735,8 +735,8 @@ class Test(BaseModel):
 class Run(BaseModel):
     def __init__(self, name, test_id, test_cromwell_job_id,
                  eval_cromwell_job_id, status, finished_at,
-                 test_input, eval_input, test_options, eval_options, errors, created_at, created_by,
-                 description=None, run_id=None, uuid=None,
+                 test_input, eval_input, test_options, eval_options, created_at, created_by,
+                 errors=None, description=None, run_id=None, uuid=None,
                  results=None, run_dir=None):
         super().__init__(run_id or uuid, name, description,
                          created_at, created_by)
@@ -749,7 +749,6 @@ class Run(BaseModel):
         self.eval_input = eval_input
         self.test_options = test_options
         self.eval_options = eval_options
-        self.errors = errors
         self.results = results
         self.run_dir = run_dir
 

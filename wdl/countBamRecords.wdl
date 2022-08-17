@@ -36,7 +36,7 @@ task CountBam {
     output {
         File? samools_error = "error.log"
         #Int num_records = read_int("count.txt")
-        File num_records_file = count.txt
+        File num_records_file = "count.txt"
     }
 
     #########################

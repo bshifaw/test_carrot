@@ -14,8 +14,12 @@ import re
 import shutil
 import urllib.request
 from dataclasses import dataclass, field
-from typing import List
+from typing import List, BinaryIO, Union
 from urllib.error import HTTPError
+from zipfile import ZIP_DEFLATED, ZipFile
+from contextlib import nullcontext
+from io import BytesIO
+from pathlib import Path
 
 # The directories where the WDLs
 # and their tests are located.
@@ -110,6 +114,26 @@ class CarrotHelper:
     @staticmethod
     def _get_eval_wdl_local_path(pipeline, template):
         return f"{pipeline}/{template}/eval.wdl"
+
+    @staticmethod
+    def _get_test_wdl_zipped_directory():
+        path = Path(WDLS_DIR_RELATIVE).resolve()
+
+        import tempfile
+        tempdirpath = tempfile.mkdtemp()
+        zipfilepath = Path(tempdirpath).joinpath("wdlDir.zip")
+
+        # https://thispointer.com/python-how-to-create-a-zip-archive-from-multiple-files-or-directory/
+        with ZipFile(zipfilepath, 'w') as zipObj:
+            # Iterate over all the files in directory
+            for folderName, subfolders, filenames in os.walk(path):
+                for filename in filenames:
+                    # create complete filepath of file in directory
+                    file_path = os.path.join(folderName, filename)
+                    # Add file to zip
+                    zipObj.write(file_path, Path(file_path).name)
+
+        return zipfilepath
 
     def _get_wdl_outputs(self, wdl, include_supported_types_only=True):
         """
@@ -412,6 +436,7 @@ class CarrotHelper:
             named_args={
                 "pipeline_id": pipeline.uuid,
                 "test_wdl": test_wdl,
+                "test_wdl_dependencies": self._get_test_wdl_zipped_directory(),
                 "eval_wdl": eval_wdl
             })
         print(response)

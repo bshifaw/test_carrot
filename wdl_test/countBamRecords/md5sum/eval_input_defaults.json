@@ -1,0 +1,5 @@
+{
+  "eval_workflow.data_file": "test_output:CountBamRecords.CountBam.num_records_file",
+  "eval_workflow.expectedMd5sum": "82298401d6b360299ab80043b57ce636"
+}
+

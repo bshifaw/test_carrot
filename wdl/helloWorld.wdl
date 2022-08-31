@@ -72,7 +72,8 @@ task HelloWorldTask {
     # Run our command:
      command <<<
          set -e
-				 echo 'Hello World!'				 
+         echo 'Hello World!'
+         echo 'Hello World!' > helloworld.txt				 
      >>>
 
     # ------------------------------------------------
@@ -89,6 +90,7 @@ task HelloWorldTask {
     # ------------------------------------------------
     # Outputs:
      output {
+       File hello_file = 'helloworld.txt'
      }
  }
 
